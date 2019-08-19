@@ -22,27 +22,33 @@ public class petsTestJsonPath {
 
     @Test
     public void validateTest() {
-        Response response = get("/pet/-286");
+        Response response = get("/pet/112238");
         List<String> jsonResponse = response.jsonPath().getList("photoUrls");
         //get the count of photo urls for this pet
-        System.out.println(jsonResponse.size());
+        System.out.println("Photo urls size - " +jsonResponse.size());
 
         //get the name of the pet
         String petName = response.jsonPath().getString("name");
-        System.out.println(petName);
+        System.out.println("Pet name - " +petName);
 
         //get the status of the pet
         String petStatus = response.jsonPath().getString("status");
-        System.out.println(petStatus);
+        System.out.println("Pet status - " +petStatus);
 
-        List<Map<String, Integer>> allTags = response.jsonPath().getList("tags");
-        System.out.println(allTags.get(1));
+        //get the category name of the pet
+        String catName = response.jsonPath().getString("category.name");
+        System.out.println("Category name - " +catName);
+
+        List<Map<String, Integer>> listTags = response.jsonPath().getList("tags");
+        System.out.println(listTags.get(1));
+
+        //Get first item from the list
+        String firstItem = response.jsonPath().getString("tags.name[0]");
+        System.out.println("First tag name - " +firstItem);
+
+        Map<String, Integer> mapTags = response.jsonPath().getMap("tags[0]");
+        System.out.println(mapTags);
 
     }
 
-    @Test
-    public void testSchema() {
-        get("/pet/1076").then().statusCode(200).assertThat().body(matchesJsonSchemaInClasspath("matchJ.json"));
-
-    }
 }
